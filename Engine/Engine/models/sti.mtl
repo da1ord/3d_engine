@@ -1,0 +1,123 @@
+newmtl default
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd textures/isld1.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl Default
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 1 1 1
+Ks 0 0 0
+Km 0
+map_Kd textures/wtrs2.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_palm_stems
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 0.5 0.2 0.3
+Ks 0 0 0
+Km 0
+map_Kd textures/Leaf_CoconutGre0.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_palm_leaves
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 0.1 0.7 0.2
+Ks 0 0 0 
+Km 0
+map_Kd textures/Leaf_CoconutGre0_01.dds
+map_D /Maps/Leaf_CoconutGre1.jpg
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_ferns
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 0.1 0.5 0.2
+Ks 0 0 0
+Km 0
+map_Kd textures/Small_Palm_Leaf0.dds
+map_D /Maps/Small_Palm_Leaf1.jpg
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_Small_Palms
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 0.1 0.7 0.2
+Ks 0 0 0
+Km 0
+map_Kd textures/Small_Palm_Leaf0.dds
+map_D /Maps/Small_Palm_Leaf1.jpg
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_house
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 0.6 0.6 0.6
+Ks 0 0 0
+Km 0
+map_Kd textures/dwd1.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_walls
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 1 1 1
+Ks 0.6 0.6 0.6
+Km 0
+map_Kd textures/fc1b.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_island_bridge
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 1 1 1
+Ks 0.6 0.6 0.6
+Km 0
+map_Kd textures/fc1b.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+
+newmtl default_rocks2
+d 1
+Ns 1
+Ni 0
+Ka 0.2 0.2 0.2
+Kd 1 1 1
+Ks 0.6 0.6 0.6
+Km 0
+map_Kd textures/tga1.dds
+vert shaders/phong.vert
+frag shaders/phong.frag
+

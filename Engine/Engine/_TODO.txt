@@ -1,0 +1,17 @@
+- Frustum culling - add classes
+  - terrain, objects
+- Load LOD geometry - only 1 loaded now
+- load shaders once, scene - shader list ?
+
+- bitmap fonts
+- (picking (terrain sculpting, adding vegetation))
+- mask texture (alpha) for tree leaves
+- Terrain grass - GS
+- Instancing
+- Animations
+- GUI
+
+Done:
+- DDS texture loader
+- OBJ loader
+- load materials in model loading (mtllib line)

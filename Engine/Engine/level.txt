@@ -1,0 +1,18 @@
+##### SCENES #####
+# typ (o - objekt, m - adresar s objekty) model.ply/adresar, u objektu jeste opengl VBO typ (static_draw, dynamic_draw), pozice (vektor x,y,z), rotace (quat - w,x,y,z)
+o models/FSQuad/fsQuad.obj
+o models/FSQuad/fsQuad2.obj
+o models/skydome/skydome.obj
+
+#p models/dragon/plane.ply
+#p models/dragon/dragon.ply
+#p models/terrain.ply
+
+o models/sti.obj
+#o models/island.obj
+#o models/Touareg.obj
+#o models/altair.obj
+
+#o models/cube/cube.obj
+o models/cube/sphere.obj
+#o models/cube/sphere2.obj
