@@ -171,8 +171,8 @@ void Scene::MouseMoveCallback() {
   
   int h_width = scene_settings_->video_.width_ / 2;
   int h_height = scene_settings_->video_.height_ / 2;
-  double diffx = (double)(mx - h_width);// * settings_.mouse_sensitivity_;
-  double diffy = (double)(my - h_height);// * settings_.mouse_sensitivity_;
+  float diffx = (float)(mx - h_width);// * settings_.mouse_sensitivity_;
+  float diffy = (float)(my - h_height);// * settings_.mouse_sensitivity_;
   
   vec3 rot = cameras_[player_->camera_id_]->rotation_;//active_camera_
 

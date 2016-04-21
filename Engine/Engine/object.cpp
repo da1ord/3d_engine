@@ -19,13 +19,12 @@ void Object::LoadModels(string &file) {
   int offset = 0;
   
   Model *m = NULL;
-  char *buffer;
   string contents;
 
   ifstream model(file);
   if (model) {
     model.seekg(0, ios::end);
-    contents.resize(model.tellg());
+    contents.resize(static_cast<uint>(model.tellg()));
     model.seekg(0, ios::beg);
     model.read(&contents[0], contents.size());
     model.close();

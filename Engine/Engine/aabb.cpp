@@ -114,9 +114,9 @@ void AABB::Recalculate() {
 }
 
 void AABB::CalcCenter() {
-  center_.x = (bounds_[0].x + bounds_[1].x) / 2.0;
-  center_.y = (bounds_[0].y + bounds_[1].y) / 2.0;
-  center_.z = (bounds_[0].z + bounds_[1].z) / 2.0;
+  center_.x = (bounds_[0].x + bounds_[1].x) / 2.0f;
+  center_.y = (bounds_[0].y + bounds_[1].y) / 2.0f;
+  center_.z = (bounds_[0].z + bounds_[1].z) / 2.0f;
 }
 
 void AABB::CalcSize() {

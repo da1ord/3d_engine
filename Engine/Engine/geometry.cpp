@@ -12,7 +12,7 @@ Geometry::~Geometry() {
 
 void Geometry::LoadGeometry(string &file, AABB *aabb) {
   string line;
-  int line_count = 0;
+  GLuint line_count = 0;
   int i = 0;
   int v = 0;
   
@@ -88,8 +88,8 @@ void Geometry::LoadGeometry(string &file, AABB *aabb) {
     geometry.close();
   }
 
-  for (int i = 0; i < num_faces_; i++) {
-    int vert_indices[3] = { indices_[i * 3 + 0], 
+  for (GLuint i = 0; i < num_faces_; i++) {
+    GLuint vert_indices[3] = { indices_[i * 3 + 0], 
         indices_[i * 3 + 1], indices_[i * 3 + 2] };
     float v3v1, v2v1, u3u1, u2u1;
     vec3 p3p1, p2p1;
@@ -134,7 +134,7 @@ void Geometry::LoadGeometry(string &file, AABB *aabb) {
     vertices_[vert_indices[2]].binormal_ += binormal;
   }
 
-  for (unsigned int v = 0; v < num_verts_; v++) {
+  for (GLuint v = 0; v < num_verts_; v++) {
     glm::normalize(vertices_[v].tangent_);
     glm::normalize(vertices_[v].binormal_);
   }

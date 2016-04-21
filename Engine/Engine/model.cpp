@@ -106,8 +106,7 @@ void Model::BindUniforms(mat4 &mvp) {
   glUniformMatrix4fv(material_->shader_uniforms_->MVP, 1, GL_FALSE, value_ptr(mvp));
 }
 
-void Model::BindUniforms(mat4 &mvp, mat4 &v, GLuint &shadowTex, 
-    mat4 *shadowMats, float *farPlanes) {
+void Model::BindUniforms(mat4 &mvp, mat4 &v, GLuint &shadowTex, mat4 *shadowMats, float *farPlanes) {
   // Activate and bind diffuse texture
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, material_->tex_diff_);

@@ -43,8 +43,8 @@ class Scene
   ShadowMap *shadow_map_;
 
   vector<Camera*> cameras_;
-  int active_camera_;
-  int light_camera_;
+  uint active_camera_;
+  uint light_camera_;
   Player *player_;
 
   double frame_time_;

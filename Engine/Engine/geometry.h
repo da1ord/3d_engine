@@ -13,9 +13,9 @@ struct Geometry
   Vertex *vertices_;
   GLuint *indices_;
   vector<Face*> faces_;
-  int num_verts_;
-  int num_indices_;
-  int num_faces_;
+  GLuint num_verts_;
+  GLuint num_indices_;
+  GLuint num_faces_;
   GLuint vao_;
   GLuint vbo_;
   GLuint ibo_;

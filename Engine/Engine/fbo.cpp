@@ -61,7 +61,7 @@ void FBO::GenerateTextures(int colors, bool depth, int width, int height) {
   if (colors > 0) {
     glGenTextures(colors, color_attachment_);
 
-    for (unsigned int i = 0 ; i < colors; i++) {
+    for (int i = 0 ; i < colors; i++) {
       glBindTexture(GL_TEXTURE_2D, color_attachment_[i]);
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, 
         GL_FLOAT, NULL);

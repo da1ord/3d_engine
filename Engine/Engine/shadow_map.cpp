@@ -1,7 +1,7 @@
 #include "main.h"
 
 ShadowMap::ShadowMap() {
-  ShadowMap(3, 0.85, 0.1, 1000.0, 1024, 600);
+  ShadowMap(3, 0.85f, 0.1f, 1000.0f, 1920, 1920);
 }
 
 ShadowMap::ShadowMap(unsigned int csm_levels, float weight, float near_plane, 

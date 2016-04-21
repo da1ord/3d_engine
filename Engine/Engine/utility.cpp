@@ -1,6 +1,6 @@
 #include "main.h"
 
-GLuint Utility::LoadShaders(string vs, string fs, string gs) {
+GLuint Utility::LoadShaders(string vs, string fs, string gs) {                                                                                       
   GLuint shader_id = glCreateProgram();
 
   // Create the shaders
@@ -234,17 +234,17 @@ vector<Object*> Utility::LoadModels(string &file,
   }
   
   cout << "========================================"  << endl 
-	  << "Loading model '" << file << "'." << endl;
+      << "Loading model '" << file << "'." << endl;
   ifstream model(file);
   if (model) {
     model.seekg(0, ios::end);
-    contents.resize(model.tellg());
+    contents.resize(static_cast<uint>(model.tellg()));
     model.seekg(0, ios::beg);
     model.read(&contents[0], contents.size());
     model.close();
   }
-  int f1 = 0;
-  int f2 = 0;
+  uint f1 = 0;
+  uint f2 = 0;
   string s;
 
   while (f1 < contents.size()) {
@@ -343,22 +343,21 @@ vector<Object*> Utility::LoadModels(string &file,
       else if (s.substr(0, 2) == "f " ) {
         if (vt > 0 && vn > 0) {
           vec3 pos, tex, norm;
-          sscanf_s(s.c_str(), "%*s %f/%f/%f %f/%f/%f %f/%f/%f", &pos.x, 
-            &tex.x, &norm.x, &pos.y, &tex.y, &norm.y, &pos.z, &tex.z, &norm.z);
+          sscanf_s(s.c_str(), "%*s %f/%f/%f %f/%f/%f %f/%f/%f", &pos.x, &tex.x, &norm.x, &pos.y, &tex.y, &norm.y, &pos.z, &tex.z, &norm.z);
           Vertex vert;
-          vert.position_ = positions[pos.x - offset_v - 1];
-          vert.tex_uv_ = tex_coords[tex.x - offset_vt - 1];
-          vert.normal_ = normals[norm.x - offset_vn - 1];
+          vert.position_ = positions[(uint)pos.x - offset_v - 1];
+          vert.tex_uv_ = tex_coords[(uint)tex.x - offset_vt - 1];
+          vert.normal_ = normals[(uint)norm.x - offset_vn - 1];
           verts.push_back(vert);
           indices.push_back(verts.size() - 1);
-          vert.position_ = positions[pos.y - offset_v - 1];
-          vert.tex_uv_ = tex_coords[tex.y - offset_vt - 1];
-          vert.normal_ = normals[norm.y - offset_vn - 1];
+          vert.position_ = positions[(uint)pos.y - offset_v - 1];
+          vert.tex_uv_ = tex_coords[(uint)tex.y - offset_vt - 1];
+          vert.normal_ = normals[(uint)norm.y - offset_vn - 1];
           verts.push_back(vert);
           indices.push_back(verts.size() - 1);
-          vert.position_ = positions[pos.z - offset_v - 1];
-          vert.tex_uv_ = tex_coords[tex.z - offset_vt - 1];
-          vert.normal_ = normals[norm.z - offset_vn - 1];
+          vert.position_ = positions[(uint)pos.z - offset_v - 1];
+          vert.tex_uv_ = tex_coords[(uint)tex.z - offset_vt - 1];
+          vert.normal_ = normals[(uint)norm.z - offset_vn - 1];
           verts.push_back(vert);
           indices.push_back(verts.size() - 1);
         }

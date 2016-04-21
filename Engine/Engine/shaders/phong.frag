@@ -63,8 +63,8 @@ float sampleShadow(vec2 shadowCoord, sampler2DArray map, float bias, float fragD
   //if (shadowDepth > 0.999) {
   //  return 1.0;
   //}
-	float depth = fragDepth / shadowDepth;
-	return depth > bias ? 0.0 : 1.0;
+    float depth = fragDepth / shadowDepth;
+    return depth > bias ? 0.0 : 1.0;
 }
 
 float pcfFilter(vec3 shadowCoord, sampler2DArray map, float bias) {
@@ -72,8 +72,8 @@ float pcfFilter(vec3 shadowCoord, sampler2DArray map, float bias) {
   float fragDepth = shadowCoord.z;
 
   if (sampleShadow(uv, map, bias, fragDepth) < 1.0) {
-		float result = 0.0;
-		int cnt = 0;
+        float result = 0.0;
+        int cnt = 0;
     float l2 = pow(2.f, level + 1.f);
     vec2 size = vec2(1.0 / 2048.0 / l2, 1.0 / 1200.0 / l2); // 1.0 / texSize
     for (float x = -1.0; x <= 1.0; x++) {
@@ -84,10 +84,10 @@ float pcfFilter(vec3 shadowCoord, sampler2DArray map, float bias) {
 
         result += sampleShadow(uv, map, bias, fragDepth);
       }
-		}
+        }
     return result / 9.0;
-	}
-	else return 1.0;
+    }
+    else return 1.0;
 }
 
 void main(void) {
@@ -142,9 +142,9 @@ void main(void) {
     
     if (shadowUV.x <= 1.0 && shadowUV.x >= 0.0 && 
         shadowUV.y <= 1.0 && shadowUV.y >= 0.0) {
-    	float shadow = pcfFilter(shadowUV.xyz, shadowMap, levelBias);
+        float shadow = pcfFilter(shadowUV.xyz, shadowMap, levelBias);
       if (dim >= 0.0) {
-	      diffuse *= shadow;
+          diffuse *= shadow;
       }
     }
   }
