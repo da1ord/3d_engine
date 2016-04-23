@@ -47,9 +47,16 @@ void Scene::Init() {
   cameras_[light_camera_]->view_matrix_ = lookAt(vec3(-500.0f, 500.0, 500.0f), 
    vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-  shadow_map_ = new ShadowMap(3, 0.5f, scene_settings_->video_.near_plane_, 
+  shadow_map_ = new ShadowMap(3, 0.65f, scene_settings_->video_.near_plane_, 
     scene_settings_->video_.far_plane_, 2 * scene_settings_->video_.width_, 
     2 * scene_settings_->video_.height_);
+
+  // Enable/disable rendering of shadows
+  shadows_ = true;
+  // Enable/disable rendering of colored shadow map frustums
+  color_csm_ = false;
+
+  cout << "Scene loaded." << endl;
 }
 
 void Scene::InitOGL() {
@@ -160,6 +167,12 @@ void Scene::KeyboardCallback() {
     if (active_camera_ >= cameras_.size()) {
       active_camera_ = 0;
     }
+  }
+  if (glfwGetKey(window_, 'O') == GLFW_PRESS) {
+    shadows_ = !shadows_;
+  }
+  if (glfwGetKey(window_, 'P') == GLFW_PRESS) {
+    color_csm_ = !color_csm_;
   }
 
   cameras_[active_camera_]->UpdateView();//active_camera_
@@ -350,6 +363,10 @@ void Scene::Run() {
               cameras_[active_camera_]->view_matrix_, 
               shadow_map_->shadow_texture_, &shadow_map_->shadow_vp_mats_[0], 
               &shadow_map_->far_planes_[1]);
+
+            glUniform1i(glGetUniformLocation(materials_[m]->shader_id_, "shadows"), shadows_);
+            glUniform1i(glGetUniformLocation(materials_[m]->shader_id_, "color_csm"), color_csm_);
+
             static_objects_[i]->models_[j]->Draw(0);
           }
         }

@@ -47,6 +47,11 @@ class Scene
   uint light_camera_;
   Player *player_;
 
+  // Enable/disable rendering of shadows
+  GLboolean shadows_;
+  // Enable/disable rendering of colored shadow map frustums
+  GLboolean color_csm_;
+
   double frame_time_;
 };
 
