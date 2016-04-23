@@ -111,6 +111,11 @@ void Model::BindUniforms(mat4 &mvp, mat4 &v, GLuint &shadowTex, mat4 *shadowMats
   glActiveTexture(GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, material_->tex_diff_);
   glUniform1i(material_->shader_uniforms_->tex_diff, 0);
+
+  // Activate and bind alpha texture
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, material_->tex_alpha_);
+  glUniform1i(material_->shader_uniforms_->tex_alpha, 1);
   
   // Activate and bind static shadow texture
   glActiveTexture(GL_TEXTURE2);
@@ -145,6 +150,7 @@ void Model::BindUniforms(mat4 &mvp, mat4 &v, GLuint &shadowTex, mat4 *shadowMats
   
   glUniform1f(material_->shader_uniforms_->has_diff, material_->has_diff_tex);
   glUniform1f(material_->shader_uniforms_->has_norm, material_->has_norm_tex);
+  glUniform1f(material_->shader_uniforms_->has_alpha, material_->has_alpha_tex);
 }
 
 void Model::Draw(int lod) {

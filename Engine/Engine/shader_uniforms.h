@@ -5,6 +5,7 @@ struct ShaderUniforms {
   // Textures
   GLint tex_diff;
   GLint tex_norm;
+  GLint tex_alpha;
   // Matrices
   GLint MVP;
   GLint M;
@@ -21,6 +22,7 @@ struct ShaderUniforms {
   
   GLint has_diff;
   GLint has_norm;
+  GLint has_alpha;
 };
 
 #endif

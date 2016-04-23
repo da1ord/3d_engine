@@ -23,10 +23,12 @@ struct Variables {
 in Variables vars_fs;
 
 // Textures
-uniform sampler2D tex_diff;	      // Texture
+uniform sampler2D tex_diff;	      // Diffuse texture
+uniform sampler2D tex_alpha;      // Alpha texture
 uniform sampler2D tex_norm;       // Bump map
 uniform float has_diff_tex;       // Has diffuse texture
 uniform float has_norm_tex;       // Has normal texture
+uniform float has_alpha_tex;      // Has alpha texture
 
 // Shadows
 uniform sampler2DArray shadowMap; // Shadow map
@@ -98,8 +100,13 @@ float pcfFilter(vec3 shadowCoord, sampler2DArray map, float bias) {
 void main(void) {
   // Prepare data from texture files
   vec4 texel = vec4(1, 1, 1, 1);
+  float alpha_ = alpha;
+
   if (has_diff_tex > 0) {
     texel = texture(tex_diff, vars_fs.varTexCoord);
+  }
+  if (has_alpha_tex > 0) {
+    alpha_ = texture(tex_alpha, vars_fs.varTexCoord).r;
   }
   
   vec3 normal = normalize(vars_fs.varNormal);
@@ -184,8 +191,7 @@ void main(void) {
   if (has_norm_tex > 0) {
     outColor = clamp(texel, 0.0, 1.0);
   }
-  
-  outColor.a = alpha;
+  outColor.a = alpha_;
   
   //outColor2 = vec4(1.0, 0.0, 0.0, 1.0);
   //outColor3 = vec4(0.0, 1.0, 0.0, 1.0);

@@ -157,10 +157,18 @@ vector<Material*> Utility::LoadMaterial(string &file) {
       else if (line.find("map_Kd ") != std::string::npos) {
         string diff_tex;
         diff_tex = line.substr(7, diff_tex.length() - 7);
-		cout << "Loading diffuse texture '" << diff_tex << "'." << endl;
+        cout << "Loading diffuse texture '" << diff_tex << "'." << endl;
         Utility::LoadDDSTexture(m->tex_diff_, diff_tex.c_str());
-		cout << "Diffuse texture '" << diff_tex << "' loaded." << endl;
+        cout << "Diffuse texture '" << diff_tex << "' loaded." << endl;
         m->has_diff_tex = 1;
+      }
+      else if (line.find("map_Ka ") != std::string::npos) {
+        string alpha_tex;
+        alpha_tex = line.substr(7, alpha_tex.length() - 7);
+        cout << "Loading alpha texture '" << alpha_tex << "'." << endl;
+        Utility::LoadDDSTexture(m->tex_alpha_, alpha_tex.c_str());
+        cout << "Alpha texture '" << alpha_tex << "' loaded." << endl;
+        m->has_alpha_tex = 1;
       }
       else if (line.find("Ka ") != std::string::npos) {
         sscanf_s(line.c_str(), "%*s %f %f %f", &m->ambient_.x, &m->ambient_.y, 
