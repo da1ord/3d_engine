@@ -47,9 +47,16 @@ void Scene::Init() {
   cameras_[light_camera_]->view_matrix_ = lookAt(vec3(-500.0f, 500.0, 500.0f), 
    vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
-  shadow_map_ = new ShadowMap(3, 0.5f, scene_settings_->video_.near_plane_, 
+  shadow_map_ = new ShadowMap(3, 0.8f, scene_settings_->video_.near_plane_, 
     scene_settings_->video_.far_plane_, 2 * scene_settings_->video_.width_, 
     2 * scene_settings_->video_.height_);
+
+  // Enable/disable rendering of shadows
+  shadows_ = true;
+  // Enable/disable rendering of colored shadow map frustums
+  color_csm_ = false;
+
+  cout << "Scene loaded." << endl;
 }
 
 void Scene::InitOGL() {
@@ -160,6 +167,12 @@ void Scene::KeyboardCallback() {
     if (active_camera_ >= cameras_.size()) {
       active_camera_ = 0;
     }
+  }
+  if (glfwGetKey(window_, 'O') == GLFW_PRESS) {
+    shadows_ = !shadows_;
+  }
+  if (glfwGetKey(window_, 'P') == GLFW_PRESS) {
+    color_csm_ = !color_csm_;
   }
 
   cameras_[active_camera_]->UpdateView();//active_camera_
@@ -332,6 +345,9 @@ void Scene::Run() {
     }
     //===========SHADOWMAP GENERATION===========>
 
+    // Enable blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -350,6 +366,10 @@ void Scene::Run() {
               cameras_[active_camera_]->view_matrix_, 
               shadow_map_->shadow_texture_, &shadow_map_->shadow_vp_mats_[0], 
               &shadow_map_->far_planes_[1]);
+
+            glUniform1i(glGetUniformLocation(materials_[m]->shader_id_, "shadows"), shadows_);
+            glUniform1i(glGetUniformLocation(materials_[m]->shader_id_, "color_csm"), color_csm_);
+
             static_objects_[i]->models_[j]->Draw(0);
           }
         }
@@ -358,6 +378,10 @@ void Scene::Run() {
     glUseProgram(0);
  
     glClear(GL_DEPTH_BUFFER_BIT);
+    
+    // Disable blending
+    glDisable(GL_BLEND);
+
 
     fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 0, 0.1f, vec2(0.5, 0));
     fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 1, 0.1f, vec2(0.7, 0));
@@ -525,6 +549,13 @@ void Scene::GenerateShadowMap(mat4 &shadowVP, int level) {
       mat4 mvp = shadowVP * static_objects_[i]->models_[j]->model_matrix_;
       glUniformMatrix4fv(glGetUniformLocation(shadow_map_->shadow_shader_, 
         "MVP"), 1, GL_FALSE, &mvp[0][0]);
+
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, static_objects_[i]->models_[j]->material_->tex_alpha_);
+      glUniform1i(glGetUniformLocation(shadow_map_->shadow_shader_, "tex_alpha"), 0);
+
+      glUniform1f(glGetUniformLocation(shadow_map_->shadow_shader_, "has_alpha_tex"), static_objects_[i]->models_[j]->material_->has_alpha_tex);
+
       //static_objects_[i]->models_[j]->BindUniforms(mvp);
       static_objects_[i]->models_[j]->Draw(0);
     }

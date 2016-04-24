@@ -2,7 +2,7 @@
 # typ (o - objekt, m - adresar s objekty) model.ply/adresar, u objektu jeste opengl VBO typ (static_draw, dynamic_draw), pozice (vektor x,y,z), rotace (quat - w,x,y,z)
 o models/FSQuad/fsQuad.obj
 o models/FSQuad/fsQuad2.obj
-o models/skydome/skydome.obj
+#o models/skydome/skydome.obj
 
 #p models/dragon/plane.ply
 #p models/dragon/dragon.ply

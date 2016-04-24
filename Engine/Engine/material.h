@@ -19,10 +19,12 @@ struct Material
   float alpha_;
   GLuint has_diff_tex;
   GLuint has_norm_tex;
+  GLuint has_alpha_tex;
 
   GLuint tex_diff_;
   GLuint tex_bump_;
   GLuint tex_spec_;
+  GLuint tex_alpha_;
 };
 
 #endif

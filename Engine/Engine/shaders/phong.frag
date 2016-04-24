@@ -23,10 +23,12 @@ struct Variables {
 in Variables vars_fs;
 
 // Textures
-uniform sampler2D tex_diff;	      // Texture
+uniform sampler2D tex_diff;	      // Diffuse texture
+uniform sampler2D tex_alpha;      // Alpha texture
 uniform sampler2D tex_norm;       // Bump map
 uniform float has_diff_tex;       // Has diffuse texture
 uniform float has_norm_tex;       // Has normal texture
+uniform float has_alpha_tex;      // Has alpha texture
 
 // Shadows
 uniform sampler2DArray shadowMap; // Shadow map
@@ -53,6 +55,11 @@ const vec4 light0_col = vec4(1.0);
 out vec4 outColor;	// Final fragment color
 
 const float levelBias = 1.0011;
+
+// Enable/disable rendering of shadows
+uniform bool shadows;
+// Enable/disable rendering of colored shadow map frustums
+uniform bool color_csm;
 
 float rand(vec2 co) {
   return fract(sin(dot(co.xy, vec2(12.9898, 78.233))) * 43758.5453);
@@ -93,8 +100,13 @@ float pcfFilter(vec3 shadowCoord, sampler2DArray map, float bias) {
 void main(void) {
   // Prepare data from texture files
   vec4 texel = vec4(1, 1, 1, 1);
+  float alpha_ = alpha;
+
   if (has_diff_tex > 0) {
     texel = texture(tex_diff, vars_fs.varTexCoord);
+  }
+  if (has_alpha_tex > 0) {
+    alpha_ = texture(tex_alpha, vars_fs.varTexCoord).r;
   }
   
   vec3 normal = normalize(vars_fs.varNormal);
@@ -121,62 +133,65 @@ void main(void) {
   vec3 reflection = reflect(-light_dir, normal);
   vec4 specular = light0_col * specularColor * pow(max(dot(reflection, view_dir), 0.0), shininess);
 
-  // Select shadowmap
-  if (viewZ_fs > farPlanes.z) {     // out of view frustum
-    level = -1;
-  }
-  else if (viewZ_fs > farPlanes.y) {// farthest frustum
-    level = 2;
-  }
-  else if (viewZ_fs > farPlanes.x) {// middle frustum
-    level = 1;
-  }
-  else {                            // nearest frustum
-    level = 0;
-  }
+  // Render shadows
+  if (shadows) {
+	  // Select shadowmap
+	  if (viewZ_fs > farPlanes.z) {     // out of view frustum
+		level = -1;
+	  }
+	  else if (viewZ_fs > farPlanes.y) {// farthest frustum
+		level = 2;
+	  }
+	  else if (viewZ_fs > farPlanes.x) {// middle frustum
+		level = 1;
+	  }
+	  else {                            // nearest frustum
+		level = 0;
+	  }
 
-  // Shadowtest
-  if (has_norm_tex < 1 && level > -1) {
-    vec4 shadowUV = shadowMVP[level] * vars_fs.vPosition;
-    shadowUV.xyz /= shadowUV.w;
+	  // Shadowtest
+	  if (has_norm_tex < 1 && level > -1) {
+		vec4 shadowUV = shadowMVP[level] * vars_fs.vPosition;
+		shadowUV.xyz /= shadowUV.w;
     
-    if (shadowUV.x <= 1.0 && shadowUV.x >= 0.0 && 
-        shadowUV.y <= 1.0 && shadowUV.y >= 0.0) {
-        float shadow = pcfFilter(shadowUV.xyz, shadowMap, levelBias);
-      if (dim >= 0.0) {
-          diffuse *= shadow;
-      }
+		/*if (shadowUV.x <= 1.0 && shadowUV.x >= 0.0 && 
+			shadowUV.y <= 1.0 && shadowUV.y >= 0.0) */
+		  {
+		  float shadow = pcfFilter(shadowUV.xyz, shadowMap, levelBias);
+		  if (dim >= 0.0) {
+			  diffuse *= shadow;
+		  }
+		}
+	  }
+  }
+  
+  // Render colored shadow map frustums
+  if (color_csm) {
+    if (level == 0) {     // farthest frustum
+      diffuse.r = 1.0f;
+      diffuse.g = 0.0f;
+      diffuse.b = 0.0f;
+    }
+    else if (level == 1) {// middle frustum
+      diffuse.r = 0.0f;
+      diffuse.g = 0.0f;
+      diffuse.b = 1.0f;
+    }
+    else {                // nearest frustum
+      diffuse.r = 0.0f;
+      diffuse.g = 1.0f;
+      diffuse.b = 0.0f;
     }
   }
-
-  // Color shadowmaps
-  //if (shadow < 0.99) {
-  //  if (level == 0) {     // farthest frustum
-  //    diffuse.r = 1.0f;
-  //    diffuse.g = 0.0f;
-  //    diffuse.b = 0.0f;
-  //  }
-  //  else if (level == 1) {// middle frustum
-  //    diffuse.r = 0.0f;
-  //    diffuse.g = 0.0f;
-  //    diffuse.b = 1.0f;
-  //  }
-  //  else {                  // nearest frustum
-  //    diffuse.r = 0.0f;
-  //    diffuse.g = 1.0f;
-  //    diffuse.b = 0.0f;
-  //  }
-  //}
   
   // Combine final fragment color
-  diffuse = max(diffuse, 0.1); 
+  //diffuse = max(diffuse, 0.1); 
   // TODO: specular is bad - black artifacts
   outColor = clamp(ambient + diffuse, 0.0, 1.0);// + specular
   if (has_norm_tex > 0) {
     outColor = clamp(texel, 0.0, 1.0);
   }
-  
-  outColor.a = alpha;
+  outColor.a = alpha_;
   
   //outColor2 = vec4(1.0, 0.0, 0.0, 1.0);
   //outColor3 = vec4(0.0, 1.0, 0.0, 1.0);

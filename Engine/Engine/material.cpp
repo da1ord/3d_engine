@@ -3,11 +3,17 @@
 Material::Material() {
   has_diff_tex = 0;
   has_norm_tex = 0;
+  has_alpha_tex = 0;
+
+  alpha_ = 1.0f;
 }
 
 Material::Material(string &file) {
   has_diff_tex = 0;
   has_norm_tex = 0;
+  has_alpha_tex = 0;
+
+  alpha_ = 1.0f;
   //LoadMaterial(file);
 }
 
@@ -79,6 +85,7 @@ Material::~Material() {
 void Material::SetupUniforms() {
   shader_uniforms_->tex_diff = glGetUniformLocation(shader_id_, "tex_diff");
   shader_uniforms_->tex_norm = glGetUniformLocation(shader_id_, "tex_norm");
+  shader_uniforms_->tex_alpha = glGetUniformLocation(shader_id_, "tex_alpha");
   shader_uniforms_->MVP = glGetUniformLocation(shader_id_, "MVP");
   shader_uniforms_->M = glGetUniformLocation(shader_id_, "M");
   shader_uniforms_->V_inv = glGetUniformLocation(shader_id_, "V_inv");
@@ -91,4 +98,5 @@ void Material::SetupUniforms() {
   shader_uniforms_->time = glGetUniformLocation(shader_id_, "time");
   shader_uniforms_->has_diff = glGetUniformLocation(shader_id_, "has_diff_tex");
   shader_uniforms_->has_norm = glGetUniformLocation(shader_id_, "has_norm_tex");
+  shader_uniforms_->has_alpha = glGetUniformLocation(shader_id_, "has_alpha_tex");
 }

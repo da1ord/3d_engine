@@ -34,7 +34,7 @@ GLuint Utility::LoadShaders(string vs, string fs, string gs) {
     vector<char> vs_error(info_log_length);
     glGetShaderInfoLog(vs_id, info_log_length, NULL,
       &vs_error[0]);
-    if (vs_error.size() > 1) {
+    if (vs_error[0] != '\0') {
       cout << &vs_error[0] << endl;
     }
     glAttachShader(shader_id, vs_id);
@@ -62,7 +62,7 @@ GLuint Utility::LoadShaders(string vs, string fs, string gs) {
     vector<char> fs_error(info_log_length);
     glGetShaderInfoLog(fs_id, info_log_length, NULL,
       &fs_error[0]);
-    if (fs_error.size() > 1) {
+	if (fs_error[0] != '\0') {
       cout << &fs_error[0] << endl;
     }
     glAttachShader(shader_id, fs_id);
@@ -86,10 +86,11 @@ GLuint Utility::LoadShaders(string vs, string fs, string gs) {
     // Check Fragment Shader
     glGetShaderiv(gs_id, GL_COMPILE_STATUS, &result);
     glGetShaderiv(gs_id, GL_INFO_LOG_LENGTH, &info_log_length);
+	info_log_length = 1024;
     vector<char> gs_error(info_log_length);
     glGetShaderInfoLog(gs_id, info_log_length, NULL,
       &gs_error[0]);
-    if (gs_error.size() > 1) {
+	if (gs_error[0] != '\0') {
       cout << &gs_error[0] << endl;
     }
     glAttachShader(shader_id, gs_id);
@@ -124,7 +125,7 @@ GLuint Utility::LoadShaders(string vs, string fs, string gs) {
     glDeleteShader(gs_id);
   }
 
-  cout << "Shaders loaded." << endl;
+  cout << "Shaders loaded.\n" << endl;
 
   return shader_id;
 }
@@ -156,8 +157,18 @@ vector<Material*> Utility::LoadMaterial(string &file) {
       else if (line.find("map_Kd ") != std::string::npos) {
         string diff_tex;
         diff_tex = line.substr(7, diff_tex.length() - 7);
+        cout << "Loading diffuse texture '" << diff_tex << "'." << endl;
         Utility::LoadDDSTexture(m->tex_diff_, diff_tex.c_str());
+        cout << "Diffuse texture '" << diff_tex << "' loaded." << endl;
         m->has_diff_tex = 1;
+      }
+      else if (line.find("map_Ka ") != std::string::npos) {
+        string alpha_tex;
+        alpha_tex = line.substr(7, alpha_tex.length() - 7);
+        cout << "Loading alpha texture '" << alpha_tex << "'." << endl;
+        Utility::LoadDDSTexture(m->tex_alpha_, alpha_tex.c_str());
+        cout << "Alpha texture '" << alpha_tex << "' loaded." << endl;
+        m->has_alpha_tex = 1;
       }
       else if (line.find("Ka ") != std::string::npos) {
         sscanf_s(line.c_str(), "%*s %f %f %f", &m->ambient_.x, &m->ambient_.y, 

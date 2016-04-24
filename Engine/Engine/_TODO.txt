@@ -3,9 +3,11 @@
 - Load LOD geometry - only 1 loaded now
 - load shaders once, scene - shader list ?
 
+- keyboard/mouse callbacks (scene as singleton, ...)
+- environment map
+- mask texture (alpha) for tree leaves
 - bitmap fonts
 - (picking (terrain sculpting, adding vegetation))
-- mask texture (alpha) for tree leaves
 - Terrain grass - GS
 - Instancing
 - Animations
