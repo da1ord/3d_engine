@@ -29,8 +29,8 @@ void Object::LoadModels(string &file) {
     model.read(&contents[0], contents.size());
     model.close();
   }
-  int f1 = 0;
-  int f2 = 0;
+  uint f1 = 0;
+  uint f2 = 0;
   string s;
   while (f1 < contents.size()) {
     if (f1 == 0) {

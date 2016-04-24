@@ -311,7 +311,7 @@ void Scene::Run() {
     frame_time_ = glfwGetTime() - last_frame;
     last_frame = glfwGetTime();
     
-    float fps = 1.f / frame_time_;
+    float fps = 1.f / (float)frame_time_;
     stringstream title;
     title << "Engine - FPS: " << (int)fps;
     glfwSetWindowTitle(window_, title.str().c_str());
@@ -359,9 +359,9 @@ void Scene::Run() {
  
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 0, 0.1, vec2(0.5, 0));
-    fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 1, 0.1, vec2(0.7, 0));
-    fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 2, 0.1, vec2(0.9, 0));
+    fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 0, 0.1f, vec2(0.5, 0));
+    fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 1, 0.1f, vec2(0.7, 0));
+    fs_quad_->models_[0]->DrawFSQuadTex(shadow_map_->shadow_texture_, 2, 0.1f, vec2(0.9, 0));
     
 
     //glDisable(GL_TEXTURE_2D_ARRAY);
@@ -471,18 +471,18 @@ void Scene::CalcShadowMatrices(int csmLevel, float nearPlane, float farPlane) {
     shadow_map_->frustum_points_ls_[csmLevel * 8 + i] = 
       cameras_[light_camera_]->view_matrix_ * 
       shadow_map_->frustum_points_ws_[csmLevel * 8 + i];
-	  if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x > max.x)
-		  max.x = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x;
-	  else if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x < min.x)
-		  min.x = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x;
-	  if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y > max.y)
-		  max.y = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y;
-	  else if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y < min.y)
-		  min.y = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y;
-	  if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z > max.z)
-		  max.z = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z;
-	  else if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z < min.z)
-		  min.z = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z;
+    if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x > max.x)
+      max.x = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x;
+    else if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x < min.x)
+      min.x = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].x;
+    if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y > max.y)
+      max.y = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y;
+    else if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y < min.y)
+      min.y = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].y;
+    if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z > max.z)
+      max.z = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z;
+    else if (shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z < min.z)
+      min.z = shadow_map_->frustum_points_ls_[csmLevel * 8 + i].z;
   }
 
   float offset = scene_settings_->video_.far_plane_;// 100.0f - ok, should be farPlane TODO: ?! by frustum level (0 - 10, 1 - 20, ...)
